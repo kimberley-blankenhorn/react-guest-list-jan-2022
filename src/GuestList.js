@@ -1,106 +1,139 @@
-import { useState } from 'react';
+import './App.css';
+// import { listenerCount } from 'process';
+import React, { useEffect, useState } from 'react';
 import Guest from './Guest';
 
-const guests = [
-  {
-    gender: 'male',
-    name: {
-      first: 'James',
-      last: 'Bond',
-    },
-    email: 'email@email.com',
-  },
-  {
-    gender: 'females',
-    name: {
-      first: 'Money',
-      last: 'Penny',
-    },
-    email: 'email@email.com',
-  },
-];
-
-function List(props) {
-  return <ul style={{ backgroundColor: `beige` }}>{props.children}</ul>;
-}
-
 export default function GuestList() {
-  const [guestList, setGuestList] = useState(guests);
+  const [guestList, setGuestList] = useState([]);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  // const [isAttending, setIsAttending] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const baseUrl = 'http://localhost:4000';
+  // Getting all the guests
+  useEffect(() => {
+    const guests = async () => {
+      setIsLoading(true);
+      const response = await fetch(`${baseUrl}/guests`);
+      const everyGuest = await response.json();
+      setGuestList(everyGuest);
+    };
+    guests().catch((error) => console.log(error));
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // creating a new guest
+    async function newGuest() {
+      const response = await fetch(`${baseUrl}/guests`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          isAttending: false,
+        }),
+      });
+      const createdGuest = await response.json();
+      console.log(createdGuest);
+      setFirstName('');
+      setLastName('');
+    }
+  };
+  // Removing guest
+  const [checkboxes, setCheckboxes] = React.useState({});
+  const checkboxKeys = Object.keys(checkboxes);
+  function handleDelete(id) {
+    async function deleteGuest() {
+      const response = await fetch(`${baseUrl}/${checkboxKeys}`, {
+        method: 'DELETE',
+      });
+      const deletedGuest = await response.json();
+    }
+    deleteGuest();
+  }
+  // Changing to attending
+  function handleEdit(id) {
+    async function editGuest() {
+      const response = await fetch(`${baseUrl}/${checkboxKeys}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ attending: true }),
+      });
+      const updatedGuest = await response.json();
+    }
+    editGuest();
+  }
+  // useEffect(() => {
+  //   const guests = async () => {
+  //     const response = await fetch(`${baseUrl}/guests`);
+  //     const everyGuest = await response.json();
+  //     setGuestList(everyGuest);
+  //   };
+  //   guests().catch((error) => console.log(error));
+  // }, [isAttending]);
   return (
     <div>
-      <List>
-        {guestList.map((singleGuest) => {
-          return (
-            <Guest
-              key={'guest' + singleGuest.name + singleGuest.email}
-              name={singleGuest.name}
-              email={singleGuest.email}
-            />
-          );
-        })}
-        {/* <Guest
-        name={{
-          title: 'Mrs',
-          first: 'Kimberley',
-          last: 'Blankenhorn',
-        }}
-        email="guest1@email.com"
-      /> */}
-      </List>
-      <button
-        onClick={() => {
-          const guestListCopy = [...guestList];
-          // guestListCopy.push({
-          //   gender: 'female',
-          //   name: {
-          //     first: 'Money',
-          //     last: 'Penny',
-          //   },
-          //   email: 'email@email.com',
-          // });
-          const arrayUpdated = [
-            ...guestListCopy,
-            {
-              gender: 'female',
-              name: {
-                first: 'Money',
-                last: 'Penny',
-              },
-              email: 'email@email.com',
-            },
-          ];
-          setGuestList(arrayUpdated);
-        }}
-      >
-        add new guest
-      </button>
-      <button
-        onClick={() => {
-          const arrayUpdated = [...guestList];
-
-          arrayUpdated.pop();
-          setGuestList(arrayUpdated);
-        }}
-      >
-        Remove last user
-      </button>
-      <button
-        onClick={() => {
-          const arrayUpdated = [...guestList];
-
-          const updatedGuestList = arrayUpdated.map((singleGuest, index) => {
-            if (index === arrayUpdated.length - 1) {
-              singleGuest.email = 'example@mail.com';
-              return singleGuest;
-            } else {
-              return singleGuest;
-            }
-          });
-          setGuestList(updatedGuestList);
-        }}
-      >
-        update email
-      </button>
+      <h1>Guest List Registration</h1>
+      <form onSubmit={handleSubmit}>
+        <span>First Name:</span>
+        <input id="firstName" onChange={(e) => setFirstName(e.target.value)} />
+        <span>Last Name:</span>
+        <input id="LastName" onChange={(e) => setLastName(e.target.value)} />
+        <button>Submit</button>
+        <h1>Guest List: </h1>
+        <table>
+          <tbody>
+            <tr>
+              <th></th>
+              <th>First Name</th>
+              <th>Last Name</th>
+            </tr>
+            {guestList.map((item) => (
+              <tr
+                key={item.id}
+                className={item.attending ? 'attending' : 'notAttending'}
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    defaultChecked={checkboxes[item.id]}
+                    onchange={() => {
+                      setCheckboxes({
+                        ...checkboxes,
+                        [item.id]: true,
+                      });
+                    }}
+                  />
+                </td>
+                <td>{item.firstName}</td>
+                <td>{item.lastName}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button
+          type="button"
+          onClick={(item) => handleEdit(item.id)}
+          id="delete"
+        >
+          Confirm guest attendance
+        </button>
+        {/* // Delete */}
+        <button
+          type="button"
+          onClick={(item) => handleDelete(item.id)}
+          id="delete"
+        >
+          Delete guest
+        </button>
+      </form>
     </div>
   );
 }
