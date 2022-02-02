@@ -1,5 +1,4 @@
 import './App.css';
-// import { listenerCount } from 'process';
 import React, { useEffect, useState } from 'react';
 import Guest from './Guest';
 
@@ -9,20 +8,21 @@ export default function GuestList() {
   const [lastName, setLastName] = useState('');
   // const [isAttending, setIsAttending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const baseUrl = 'http://localhost:4000';
+  const baseUrl = 'https://localhost:4000';
   // Getting all the guests
   useEffect(() => {
-    const guests = async () => {
+    const getGuestList = async () => {
       setIsLoading(true);
       const response = await fetch(`${baseUrl}/guests`);
-      const everyGuest = await response.json();
-      setGuestList(everyGuest);
+      const data = await response.json();
+      setGuestList(data);
     };
-    guests().catch((error) => console.log(error));
+    getGuestList().catch((error) => console.log(error));
     setTimeout(() => {
       setIsLoading(false);
     }, 500);
   }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // creating a new guest
@@ -43,10 +43,12 @@ export default function GuestList() {
       setFirstName('');
       setLastName('');
     }
+    newGuest();
   };
   // Removing guest
   const [checkboxes, setCheckboxes] = React.useState({});
   const checkboxKeys = Object.keys(checkboxes);
+
   function handleDelete(id) {
     async function deleteGuest() {
       const response = await fetch(`${baseUrl}/${checkboxKeys}`, {
@@ -81,11 +83,19 @@ export default function GuestList() {
   return (
     <div>
       <h1>Guest List Registration</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={() => handleSubmit()}>
         <span>First Name:</span>
-        <input id="firstName" onChange={(e) => setFirstName(e.target.value)} />
+        <input
+          id="firstName"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
         <span>Last Name:</span>
-        <input id="LastName" onChange={(e) => setLastName(e.target.value)} />
+        <input
+          id="LastName"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
         <button>Submit</button>
         <h1>Guest List: </h1>
         <table>
