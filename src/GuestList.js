@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import Guest from './Guest';
+
+// import Guest from './Guest';
 
 export default function GuestList() {
   const [guestList, setGuestList] = useState([]);
@@ -8,7 +9,7 @@ export default function GuestList() {
   const [lastName, setLastName] = useState('');
   // const [isAttending, setIsAttending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const baseUrl = 'https://localhost:4000';
+  const baseUrl = 'https://react-guest-list-create.herokuapp.com';
   // Getting all the guests
   useEffect(() => {
     const getGuestList = async () => {
@@ -23,8 +24,15 @@ export default function GuestList() {
     }, 500);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // const handleKeypress = (e) => {
+  //   //it triggers by pressing the enter key
+  //   if (e.keyCode === 13) {
+  //     handleSubmit();
+  //   }
+  // };
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     // creating a new guest
     async function newGuest() {
       const response = await fetch(`${baseUrl}/guests`, {
@@ -43,15 +51,13 @@ export default function GuestList() {
       setFirstName('');
       setLastName('');
     }
-    newGuest();
+    await newGuest();
   };
   // Removing guest
-  const [checkboxes, setCheckboxes] = React.useState({});
-  const checkboxKeys = Object.keys(checkboxes);
 
   function handleDelete(id) {
     async function deleteGuest() {
-      const response = await fetch(`${baseUrl}/${checkboxKeys}`, {
+      const response = await fetch(`${baseUrl}/guests/${id}`, {
         method: 'DELETE',
       });
       const deletedGuest = await response.json();
@@ -59,19 +65,28 @@ export default function GuestList() {
     deleteGuest();
   }
   // Changing to attending
-  function handleEdit(id) {
+  function handleEdit(id, isChecked) {
     async function editGuest() {
-      const response = await fetch(`${baseUrl}/${checkboxKeys}`, {
-        method: 'PATCH',
+      const response = await fetch(`${baseUrl}/guests/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ attending: true }),
+        body: JSON.stringify({ attending: !isChecked }),
       });
       const updatedGuest = await response.json();
     }
     editGuest();
   }
+  const isAttending = (id, isChecked) => {
+    const guestListCopy = [...guestList];
+    const updatedGuestList = guestListCopy.find(
+      (singleGuest) => singleGuest.id === id,
+    );
+    // guestList(updatedGuestList);
+    setGuestList(updatedGuestList);
+  };
+
   // useEffect(() => {
   //   const guests = async () => {
   //     const response = await fetch(`${baseUrl}/guests`);
@@ -83,19 +98,20 @@ export default function GuestList() {
   return (
     <div>
       <h1>Guest List Registration</h1>
-      <form onSubmit={() => handleSubmit()}>
-        <span>First Name:</span>
+      <form onSubmit={(e) => handleSubmit(e)}>
+        <h4>First Name:</h4>
         <input
           id="firstName"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
         />
-        <span>Last Name:</span>
+        <h4>Last Name:</h4>
         <input
           id="LastName"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
         />
+        {/* <button onClick="submit">Submit</button> */}
         <button>Submit</button>
         <h1>Guest List: </h1>
         <table>
@@ -113,12 +129,15 @@ export default function GuestList() {
                 <td>
                   <input
                     type="checkbox"
-                    defaultChecked={checkboxes[item.id]}
-                    onchange={() => {
-                      setCheckboxes({
-                        ...checkboxes,
-                        [item.id]: true,
-                      });
+                    checked={item.attending}
+                    onChange={(e) => {
+                      isAttending(guestList.id, e.target.checked);
+                      // setGuestList(updatedGuestList);
+                      // 1. create a copy of guest list
+                      // 2. Update the copy value of the guests with !isAttending
+                      // 3. update guest list state with the copy
+
+                      handleEdit(item.id, item.attending);
                     }}
                   />
                 </td>
