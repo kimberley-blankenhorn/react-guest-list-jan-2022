@@ -9,6 +9,7 @@ const generalStyle = css`
   margin: 0;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 `;
+
 const bodyBackgroundStyle = css`
   background-image: url('/background2.jpg');
   width: 100vw;
@@ -17,6 +18,21 @@ const bodyBackgroundStyle = css`
   background-repeat: no-repeat;
   /* position: fixed; */
 `;
+
+const headingStyle = css`
+  font-size: 30px;
+  color: #616161;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-shadow: -9px 5px 9px rgba(126, 119, 119, 0.6);
+  padding: 10px;
+  border: 10px inset rgba(217, 193, 208, 0.85);
+  background-color: rgb(180, 161, 170);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const leftContainerStyle = css`
   display: flex;
   justify-content: center;
@@ -26,13 +42,29 @@ const leftContainerStyle = css`
   margin-top: 40px;
   padding: 130px 50px;
   color: rgb(64, 50, 57);
+  label {
+    font-size: 23px;
+    font-weight: 900;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+  button {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    margin: 0 0 0 20px;
+    &:hover {
+      background-color: #64c4c0;
+      transition: box-shadow 0.3s 0s ease-in-out, background 0.5s 0s ease-in-out;
+    }
+  }
 `;
 
-const middleContainerStyle = css`
+const rightContainerStyle = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 35%;
+  width: 65%;
   align-items: center;
   align-content: center;
   margin: 0 0 0 -60px;
@@ -42,34 +74,33 @@ const middleContainerStyle = css`
   h1 {
     font-size: 45px;
   }
+  h3 {
+    font-size: 23px;
+    font-weight: bolder;
+  }
   table {
     font-size: 22px;
   }
-`;
 
-const rightContainerStyle = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 30%;
-  align-items: center;
-  align-content: center;
-  margin-top: 50px;
-  margin-left: -75px;
-  color: rgb(64, 50, 57);
-`;
-
-const headingStyle = css`
-  font-size: 30px;
-  color: #616161;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  padding: 10px;
-  border: 10px inset rgba(217, 193, 208, 0.85);
-  background-color: rgb(180, 161, 170);
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  button {
+    width: 150px;
+    margin-left: 30px;
+    &:hover {
+      background-color: #bf7e89;
+      transition: box-shadow 0.3s 0s ease-in-out, background 0.5s 0s ease-in-out;
+    }
+  }
+  th {
+    padding: 10px;
+    font-size: 28px;
+  }
+  td {
+    font-size: 25px;
+    input[type='checkbox'] {
+      height: 18px;
+      width: 18px;
+    }
+  }
 `;
 
 const guestListStyle = css`
@@ -218,7 +249,7 @@ export default function GuestList() {
           <div css={leftContainerStyle}>
             <form onSubmit={(e) => handleSubmit(e)}>
               <div css={inputFieldStyle}>
-                <label>
+                <label aria-label="First Name">
                   First Name:
                   <input
                     id="firstName"
@@ -228,7 +259,7 @@ export default function GuestList() {
                 </label>
               </div>
               <div css={inputFieldStyle}>
-                <label>
+                <label aria-label="Last Name">
                   Last Name:
                   <input
                     id="LastName"
@@ -242,9 +273,18 @@ export default function GuestList() {
               </div>
             </form>
           </div>
-          <div css={middleContainerStyle}>
+          <div css={rightContainerStyle}>
             <div>
               <h1>Guest List: </h1>
+            </div>
+            <div>
+              <h3>
+                Check the box for attending guests. For guests not attending,
+                simply uncheck the box.
+              </h3>
+              <h3>
+                To remove a guest from the list, press "Remove Guest" button.
+              </h3>
             </div>
             <div css={guestListStyle} data-test-id="guest">
               <table>
@@ -262,7 +302,7 @@ export default function GuestList() {
                       <td>
                         <input
                           type="checkbox"
-                          aria-label="attending"
+                          aria-label="Guest Attending"
                           checked={item.attending}
                           onChange={(e) => {
                             handleEdit(item.id, item.attending);
@@ -275,12 +315,12 @@ export default function GuestList() {
                         <div css={buttonDivStyle}>
                           <button
                             type="button"
-                            aria-label="Remove"
+                            aria-label="Remove Guest"
                             onClick={() => handleDelete(item.id)}
                             id="delete"
                             css={buttonStyle}
                           >
-                            Remove
+                            Remove Guest
                           </button>
                         </div>
                       </td>
@@ -289,19 +329,6 @@ export default function GuestList() {
                 </tbody>
               </table>
             </div>
-          </div>
-          <div css={rightContainerStyle}>
-            <div css={buttonDivStyle}>
-              <button
-                type="button"
-                onClick={(item) => handleEdit(item.id)}
-                id="delete"
-                css={buttonStyle}
-              >
-                Confirm guest attendance
-              </button>
-            </div>
-            {/* // Delete */}
           </div>
         </div>
       </div>
