@@ -125,7 +125,7 @@ export default function GuestList() {
   const [guestList, setGuestList] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const baseUrl = 'https://react-guest-list-create.herokuapp.com';
   // Getting all the guests
@@ -140,7 +140,7 @@ export default function GuestList() {
     // setTimeout(() => {
     setIsLoading(false);
     // }, 500);
-  }, []);
+  }, [guestList]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -174,7 +174,11 @@ export default function GuestList() {
       });
       const deletedGuest = await response.json();
     }
-    deleteGuest();
+    deleteGuest().catch((error) => {
+      console.log(error);
+    });
+    const updatedList = guestList.filter((guest) => guest.id !== id);
+    setGuestList(updatedList);
   }
   // Changing to attending
   function handleEdit(id, isChecked) {
@@ -214,20 +218,24 @@ export default function GuestList() {
           <div css={leftContainerStyle}>
             <form onSubmit={(e) => handleSubmit(e)}>
               <div css={inputFieldStyle}>
-                <h4>First Name:</h4>
-                <input
-                  id="firstName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
+                <label>
+                  First Name:
+                  <input
+                    id="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </label>
               </div>
               <div css={inputFieldStyle}>
-                <h4>Last Name:</h4>
-                <input
-                  id="LastName"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
+                <label>
+                  Last Name:
+                  <input
+                    id="LastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </label>
               </div>
               <div css={buttonDivStyle}>
                 <button css={buttonStyle}>Submit</button>
@@ -238,7 +246,7 @@ export default function GuestList() {
             <div>
               <h1>Guest List: </h1>
             </div>
-            <div css={guestListStyle}>
+            <div css={guestListStyle} data-test-id="guest">
               <table>
                 <tbody>
                   <tr>
@@ -257,18 +265,25 @@ export default function GuestList() {
                           aria-label="attending"
                           checked={item.attending}
                           onChange={(e) => {
-                            // handleEdit(guestList.id, item.isChecked);
-                            // setGuestList(updatedGuestList);
-                            // 1. create a copy of guest list
-                            // 2. Update the copy value of the guests with !isAttending
-                            // 3. update guest list state with the copy
-                            // handleEdit(e.currentTarget.isChecked, item.attending);
                             handleEdit(item.id, item.attending);
                           }}
                         />
                       </td>
                       <td>{item.firstName}</td>
                       <td>{item.lastName}</td>
+                      <td>
+                        <div css={buttonDivStyle}>
+                          <button
+                            type="button"
+                            aria-label="Remove"
+                            onClick={() => handleDelete(item.id)}
+                            id="delete"
+                            css={buttonStyle}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -287,16 +302,6 @@ export default function GuestList() {
               </button>
             </div>
             {/* // Delete */}
-            <div css={buttonDivStyle}>
-              <button
-                type="button"
-                onClick={(item) => handleDelete(item.id)}
-                id="delete"
-                css={buttonStyle}
-              >
-                Delete guest
-              </button>
-            </div>
           </div>
         </div>
       </div>
