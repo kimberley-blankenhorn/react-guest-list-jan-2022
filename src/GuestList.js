@@ -312,38 +312,39 @@ export default function GuestList() {
                     </tr>
 
                     {guestList.map((item) => (
-                      <tr
-                        key={item.id}
-                        className={
-                          item.isChecked ? 'attending' : 'notAttending'
-                        }
-                      >
-                        <td>
-                          <input
-                            type="checkbox"
-                            aria-label="Guest Attending"
-                            checked={item.attending}
-                            onChange={(e) => {
-                              handleEdit(item.id, e.currentTarget.checked);
-                            }}
-                          />
-                        </td>
-                        <td data-test-id="guest">{item.firstName}</td>
-                        <td>{item.lastName}</td>
-                        <td>
-                          <div css={buttonDivStyle}>
-                            <button
-                              type="button"
-                              aria-label="Remove Guest"
-                              onClick={() => handleDelete(item.id)}
-                              id="delete"
-                              css={buttonStyle}
-                            >
-                              Remove Guest
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
+                      <div key={item.id}>
+                        <tr
+                          className={
+                            item.isChecked ? 'attending' : 'notAttending'
+                          }
+                        >
+                          <td>
+                            <input
+                              type="checkbox"
+                              aria-label="Guest Attending"
+                              checked={item.attending}
+                              onChange={(e) => {
+                                handleEdit(item.id, e.currentTarget.checked);
+                              }}
+                            />
+                          </td>
+                          <td>{item.firstName}</td>
+                          <td>{item.lastName}</td>
+                          <td>
+                            <div css={buttonDivStyle}>
+                              <button
+                                type="button"
+                                aria-label="Remove Guest"
+                                onClick={() => handleDelete(item.id)}
+                                id="delete"
+                                css={buttonStyle}
+                              >
+                                Remove Guest
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </div>
                     ))}
                   </tbody>
                 </table>
