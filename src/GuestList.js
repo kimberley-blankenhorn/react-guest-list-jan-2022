@@ -307,7 +307,7 @@ export default function GuestList() {
                   <tbody>
                     <tr>
                       <th />
-                      <th>First Name</th>
+                      <th data-test-id="guest">First Name</th>
                       <th>Last Name</th>
                     </tr>
 
@@ -317,7 +317,6 @@ export default function GuestList() {
                         className={
                           item.isChecked ? 'attending' : 'notAttending'
                         }
-                        data-test-id="guest"
                       >
                         <td>
                           <input
