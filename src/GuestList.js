@@ -288,7 +288,7 @@ export default function GuestList() {
             'Loading...'
           ) : (
             // This section is for the guest list as well as delete
-            <div css={rightContainerStyle}>
+            <div css={rightContainerStyle} data-test-id="guest">
               <div>
                 <h1>Guest List: </h1>
               </div>
@@ -329,7 +329,7 @@ export default function GuestList() {
                           />
                         </td>
 
-                        <td data-test-id="guest">{item.firstName}</td>
+                        <td>{item.firstName}</td>
                         <td>{item.lastName}</td>
 
                         <td>
