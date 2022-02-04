@@ -260,7 +260,7 @@ export default function GuestList() {
               <h2>Input Guests Below</h2>
               <div css={inputFieldStyle}>
                 <label label="First name">
-                  First name:
+                  First name
                   <input
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
@@ -269,7 +269,7 @@ export default function GuestList() {
               </div>
               <div css={inputFieldStyle}>
                 <label label="Last name">
-                  Last name:
+                  Last name
                   <input
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
