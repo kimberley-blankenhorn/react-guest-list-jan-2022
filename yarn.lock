@@ -2090,10 +2090,10 @@
     "@typescript-eslint/types" "5.10.1"
     eslint-visitor-keys "^3.0.0"
 
-"@upleveled/eslint-config-upleveled@2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@upleveled/eslint-config-upleveled/-/eslint-config-upleveled-2.3.1.tgz#3e1eb668a6c8ac0b28c0a21da87f49bd5fdbfb3f"
-  integrity sha512-SeG49hBSibVjRGNs5ZfjEQr+MvBxGjPhH4qgJbPvYM29lS3MO3Bbia3XHpLVCavWrc3XZwsVF9A9xMc2Ng4mzQ==
+"@upleveled/eslint-config-upleveled@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@upleveled/eslint-config-upleveled/-/eslint-config-upleveled-2.4.0.tgz#c3c488e4b35a37645645a7e0e0df104a00c51618"
+  integrity sha512-R/tko0R8GJntbKno/yaLaGXZFB1qQ95jLKa3qkkRpc1WkzVKtD9HQhMhB2wxWnB0CKld7Ivj0WyyR8WE/Nh0VA==
 
 "@upleveled/eslint-plugin-upleveled@^2.1.0":
   version "2.1.0"
@@ -7053,7 +7053,7 @@ prompts@^2.0.1, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.7.2:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==

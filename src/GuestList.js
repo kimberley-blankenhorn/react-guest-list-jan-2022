@@ -207,6 +207,7 @@ export default function GuestList() {
         method: 'DELETE',
       });
       const deletedGuest = await response.json();
+      console.log(deletedGuest);
     }
     deleteGuest().catch((error) => {
       console.log(error);
@@ -257,7 +258,6 @@ export default function GuestList() {
                 <label aria-label="First Name">
                   First Name:
                   <input
-                    id="firstName"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
@@ -267,7 +267,6 @@ export default function GuestList() {
                 <label aria-label="Last Name">
                   Last Name:
                   <input
-                    id="LastName"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                   />
@@ -298,7 +297,7 @@ export default function GuestList() {
                 <table>
                   <tbody>
                     <tr>
-                      <th></th>
+                      <th />
                       <th>First Name</th>
                       <th>Last Name</th>
                     </tr>
