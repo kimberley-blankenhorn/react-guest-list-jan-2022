@@ -328,10 +328,10 @@ export default function GuestList() {
                             }}
                           />
                         </td>
-                        <div data-test-id="guest">
-                          <td>{item.firstName}</td>
-                          <td>{item.lastName}</td>
-                        </div>
+
+                        <td data-test-id="guest">{item.firstName}</td>
+                        <td>{item.lastName}</td>
+
                         <td>
                           <div css={buttonDivStyle}>
                             <button
