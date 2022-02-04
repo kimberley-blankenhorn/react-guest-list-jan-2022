@@ -106,6 +106,7 @@ const rightContainerStyle = css`
     input[type='checkbox'] {
       height: 18px;
       width: 18px;
+      margin-left: 15px;
     }
   }
 `;
@@ -320,6 +321,7 @@ export default function GuestList() {
                         data-test-id="guest"
                       >
                         <td>
+                          Attending
                           <input
                             type="checkbox"
                             aria-label="Guest Attending"
