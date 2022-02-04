@@ -264,6 +264,7 @@ export default function GuestList() {
                   <input
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
+                    disabled={isLoading ? 'disabled' : ''}
                   />
                 </label>
               </div>
@@ -273,6 +274,7 @@ export default function GuestList() {
                   <input
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    disabled={isLoading ? 'disabled' : ''}
                   />
                 </label>
               </div>
@@ -299,13 +301,13 @@ export default function GuestList() {
                   To remove a guest from the list, press "Remove Guest" button.
                 </h3>
               </div>
-              <div css={guestListStyle} data-test-id="guest">
+              <div css={guestListStyle}>
                 {/* Here you can edit attending or delete guests */}
                 <table>
                   <tbody>
                     <tr>
                       <th />
-                      <th>First Name</th>
+                      <th data-test-id="guest">First Name</th>
                       <th>Last Name</th>
                     </tr>
                     {guestList.map((item) => (
