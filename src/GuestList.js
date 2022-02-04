@@ -301,15 +301,16 @@ export default function GuestList() {
                   To remove a guest from the list, press "Remove Guest" button.
                 </h3>
               </div>
-              <div css={guestListStyle}>
+              <div css={guestListStyle} data-test-id="guest">
                 {/* Here you can edit attending or delete guests */}
                 <table>
                   <tbody>
                     <tr>
                       <th />
-                      <th data-test-id="guest">First Name</th>
+                      <th>First Name</th>
                       <th>Last Name</th>
                     </tr>
+
                     {guestList.map((item) => (
                       <tr
                         key={item.id}
@@ -327,7 +328,7 @@ export default function GuestList() {
                             }}
                           />
                         </td>
-                        <td>{item.firstName}</td>
+                        <td data-test-id="guest">{item.firstName}</td>
                         <td>{item.lastName}</td>
                         <td>
                           <div css={buttonDivStyle}>
