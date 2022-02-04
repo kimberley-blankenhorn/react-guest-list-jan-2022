@@ -42,9 +42,10 @@ const leftContainerStyle = css`
   width: 30%;
   align-items: center;
   align-content: center;
-  margin-top: 40px;
-  padding: 130px 50px;
+  margin-top: -200px;
+  padding: 10px 50px;
   color: rgb(64, 50, 57);
+
   label {
     font-size: 23px;
     font-weight: 900;
@@ -69,10 +70,12 @@ const rightContainerStyle = css`
   flex-direction: column;
   justify-content: flex-start;
   width: 45%;
-  /* align-items: center; */
-  /* align-content: center; */
+  height: 800px;
+  align-items: center;
+  /* /* align-content: center; */
   margin: 70px 0 0 60px;
   color: rgb(64, 50, 57);
+  vertical-align: top;
 
   /* margin-left: -150px; */
   h1 {
