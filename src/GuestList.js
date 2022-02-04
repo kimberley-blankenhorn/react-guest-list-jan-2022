@@ -288,7 +288,7 @@ export default function GuestList() {
             'Loading...'
           ) : (
             // This section is for the guest list as well as delete
-            <div css={rightContainerStyle} data-test-id="guest">
+            <div css={rightContainerStyle}>
               <div>
                 <h1>Guest List: </h1>
               </div>
@@ -304,7 +304,7 @@ export default function GuestList() {
               <div css={guestListStyle}>
                 {/* Here you can edit attending or delete guests */}
                 <table>
-                  <tbody>
+                  <tbody data-test-id="guest">
                     <tr>
                       <th />
                       <th>First Name</th>
