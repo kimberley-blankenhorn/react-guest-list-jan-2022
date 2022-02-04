@@ -304,7 +304,7 @@ export default function GuestList() {
               <div css={guestListStyle}>
                 {/* Here you can edit attending or delete guests */}
                 <table>
-                  <tbody data-test-id="guest">
+                  <tbody>
                     <tr>
                       <th />
                       <th>First Name</th>
@@ -317,6 +317,7 @@ export default function GuestList() {
                         className={
                           item.isChecked ? 'attending' : 'notAttending'
                         }
+                        data-test-id="guest"
                       >
                         <td>
                           <input
