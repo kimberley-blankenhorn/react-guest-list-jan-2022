@@ -14,7 +14,7 @@ const generalStyle = css`
 const bodyBackgroundStyle = css`
   background-image: url('/background2.jpg');
   width: 100vw;
-  height: 130vh;
+  height: 180vh;
   background-size: cover;
   background-repeat: no-repeat;
 `;
