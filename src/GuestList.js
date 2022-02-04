@@ -3,22 +3,23 @@ import './App.css';
 import { css } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 
+// Adding styling to the whole page
 const generalStyle = css`
   display: flex;
   width: 100%;
   margin: 0;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 `;
-
+// For the background
 const bodyBackgroundStyle = css`
   background-image: url('/background2.jpg');
   width: 100vw;
   height: 130vh;
   background-size: cover;
   background-repeat: no-repeat;
-  /* position: fixed; */
 `;
 
+// Header
 const headingStyle = css`
   font-size: 30px;
   color: #616161;
@@ -34,6 +35,7 @@ const headingStyle = css`
   align-items: center;
 `;
 
+// Left section - Form entry
 const leftContainerStyle = css`
   display: flex;
   justify-content: center;
@@ -61,6 +63,7 @@ const leftContainerStyle = css`
   }
 `;
 
+// Right section containing list of guests
 const rightContainerStyle = css`
   display: flex;
   flex-direction: column;
@@ -104,6 +107,7 @@ const rightContainerStyle = css`
   }
 `;
 
+// styling only for the guest list
 const guestListStyle = css`
   text-align: center;
   display: flex;
@@ -160,6 +164,7 @@ export default function GuestList() {
   // const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const baseUrl = 'https://react-guest-list-create.herokuapp.com';
+
   // Getting all the guests
   useEffect(() => {
     const getGuestList = async () => {
@@ -170,9 +175,6 @@ export default function GuestList() {
       setIsLoading(false);
     };
     getGuestList().catch((error) => console.log(error));
-    // setTimeout(() => {
-
-    // }, 500);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -199,8 +201,8 @@ export default function GuestList() {
     }
     await newGuest();
   };
-  // Removing guest
 
+  // Removing guest
   function handleDelete(id) {
     async function deleteGuest() {
       const response = await fetch(`${baseUrl}/guests/${id}`, {
@@ -228,12 +230,10 @@ export default function GuestList() {
       const updatedGuest = await response.json();
       console.log(updatedGuest);
 
-      // editGuest();
-
       const guestListCopy = [...guestList];
       const findGuest = guestListCopy.find((guest) => guest.id === id);
       findGuest.attending = isChecked;
-      // handleEdit(findGuest);
+
       console.log(findGuest);
 
       setGuestList(guestListCopy);
@@ -251,6 +251,7 @@ export default function GuestList() {
           <h1>Guest List Registration</h1>
         </div>
         <div css={generalStyle}>
+          {/* Left section containing the form for Guest Name entry */}
           <div css={leftContainerStyle}>
             <form onSubmit={(e) => handleSubmit(e)}>
               <h2>Input Guests Below</h2>
@@ -277,9 +278,11 @@ export default function GuestList() {
               </div>
             </form>
           </div>
+          {/* isLoading will disable the forms temporarily until the guest list loads */}
           {isLoading ? (
             'Loading...'
           ) : (
+            // This section is for the guest list as well as delete
             <div css={rightContainerStyle}>
               <div>
                 <h1>Guest List: </h1>
@@ -294,6 +297,7 @@ export default function GuestList() {
                 </h3>
               </div>
               <div css={guestListStyle} data-test-id="guest">
+                {/* Here you can edit attending or delete guests */}
                 <table>
                   <tbody>
                     <tr>
