@@ -259,7 +259,7 @@ export default function GuestList() {
             <form onSubmit={(e) => handleSubmit(e)}>
               <h2>Input Guests Below</h2>
               <div css={inputFieldStyle}>
-                <label aria-label="First name">
+                <label label="First name">
                   First Name:
                   <input
                     value={firstName}
@@ -268,7 +268,7 @@ export default function GuestList() {
                 </label>
               </div>
               <div css={inputFieldStyle}>
-                <label aria-label="Last name">
+                <label label="Last name">
                   Last Name:
                   <input
                     value={lastName}
