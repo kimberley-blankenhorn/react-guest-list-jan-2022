@@ -13,7 +13,7 @@ const generalStyle = css`
 const bodyBackgroundStyle = css`
   background-image: url('/background2.jpg');
   width: 100vw;
-  height: 100vh;
+  height: 130vh;
   background-size: cover;
   background-repeat: no-repeat;
   /* position: fixed; */
@@ -26,7 +26,8 @@ const headingStyle = css`
   text-shadow: -9px 5px 9px rgba(126, 119, 119, 0.6);
   padding: 10px;
   border: 10px inset rgba(217, 193, 208, 0.85);
-  background-color: rgb(180, 161, 170);
+  background-color: rgb(180, 161, 170, 0.4);
+
   text-align: center;
   display: flex;
   justify-content: center;
@@ -63,11 +64,11 @@ const leftContainerStyle = css`
 const rightContainerStyle = css`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 65%;
-  align-items: center;
-  align-content: center;
-  margin: 0 0 0 -60px;
+  justify-content: flex-start;
+  width: 45%;
+  /* align-items: center; */
+  /* align-content: center; */
+  margin: 70px 0 0 60px;
   color: rgb(64, 50, 57);
 
   /* margin-left: -150px; */
@@ -157,7 +158,7 @@ export default function GuestList() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   // const [isChecked, setIsChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const baseUrl = 'https://react-guest-list-create.herokuapp.com';
   // Getting all the guests
   useEffect(() => {
@@ -166,12 +167,13 @@ export default function GuestList() {
       const response = await fetch(`${baseUrl}/guests`);
       const data = await response.json();
       setGuestList(data);
+      setIsLoading(false);
     };
     getGuestList().catch((error) => console.log(error));
     // setTimeout(() => {
-    setIsLoading(false);
+
     // }, 500);
-  }, [guestList]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -193,6 +195,7 @@ export default function GuestList() {
       console.log(createdGuest);
       setFirstName('');
       setLastName('');
+      setGuestList([...guestList, createdGuest]);
     }
     await newGuest();
   };
@@ -219,7 +222,7 @@ export default function GuestList() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ attending: !isChecked }),
+        body: JSON.stringify({ attending: isChecked }),
       });
       const updatedGuest = await response.json();
       console.log(updatedGuest);
@@ -228,8 +231,9 @@ export default function GuestList() {
 
       const guestListCopy = [...guestList];
       const findGuest = guestListCopy.find((guest) => guest.id === id);
-      findGuest.isChecked = !isChecked;
-      handleEdit(findGuest);
+      findGuest.attending = isChecked;
+      // handleEdit(findGuest);
+      console.log(findGuest);
 
       setGuestList(guestListCopy);
       return updatedGuest;
@@ -248,6 +252,7 @@ export default function GuestList() {
         <div css={generalStyle}>
           <div css={leftContainerStyle}>
             <form onSubmit={(e) => handleSubmit(e)}>
+              <h2>Input Guests Below</h2>
               <div css={inputFieldStyle}>
                 <label aria-label="First Name">
                   First Name:
@@ -273,63 +278,69 @@ export default function GuestList() {
               </div>
             </form>
           </div>
-          <div css={rightContainerStyle}>
-            <div>
-              <h1>Guest List: </h1>
-            </div>
-            <div>
-              <h3>
-                Check the box for attending guests. For guests not attending,
-                simply uncheck the box.
-              </h3>
-              <h3>
-                To remove a guest from the list, press "Remove Guest" button.
-              </h3>
-            </div>
-            <div css={guestListStyle} data-test-id="guest">
-              <table>
-                <tbody>
-                  <tr>
-                    <th></th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                  </tr>
-                  {guestList.map((item) => (
-                    <tr
-                      key={item.id}
-                      className={item.isChecked ? 'attending' : 'notAttending'}
-                    >
-                      <td>
-                        <input
-                          type="checkbox"
-                          aria-label="Guest Attending"
-                          checked={item.attending}
-                          onChange={(e) => {
-                            handleEdit(item.id, item.attending);
-                          }}
-                        />
-                      </td>
-                      <td>{item.firstName}</td>
-                      <td>{item.lastName}</td>
-                      <td>
-                        <div css={buttonDivStyle}>
-                          <button
-                            type="button"
-                            aria-label="Remove Guest"
-                            onClick={() => handleDelete(item.id)}
-                            id="delete"
-                            css={buttonStyle}
-                          >
-                            Remove Guest
-                          </button>
-                        </div>
-                      </td>
+          {isLoading ? (
+            'Loading...'
+          ) : (
+            <div css={rightContainerStyle}>
+              <div>
+                <h1>Guest List: </h1>
+              </div>
+              <div>
+                <h3>
+                  Check the box for attending guests. For guests not attending,
+                  simply uncheck the box.
+                </h3>
+                <h3>
+                  To remove a guest from the list, press "Remove Guest" button.
+                </h3>
+              </div>
+              <div css={guestListStyle} data-test-id="guest">
+                <table>
+                  <tbody>
+                    <tr>
+                      <th></th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                    {guestList.map((item) => (
+                      <tr
+                        key={item.id}
+                        className={
+                          item.isChecked ? 'attending' : 'notAttending'
+                        }
+                      >
+                        <td>
+                          <input
+                            type="checkbox"
+                            aria-label="Guest Attending"
+                            checked={item.attending}
+                            onChange={(e) => {
+                              handleEdit(item.id, e.currentTarget.checked);
+                            }}
+                          />
+                        </td>
+                        <td>{item.firstName}</td>
+                        <td>{item.lastName}</td>
+                        <td>
+                          <div css={buttonDivStyle}>
+                            <button
+                              type="button"
+                              aria-label="Remove Guest"
+                              onClick={() => handleDelete(item.id)}
+                              id="delete"
+                              css={buttonStyle}
+                            >
+                              Remove Guest
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
