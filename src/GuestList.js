@@ -106,7 +106,7 @@ const rightContainerStyle = css`
     input[type='checkbox'] {
       height: 18px;
       width: 18px;
-      margin-left: 15px;
+      margin: 0 45px;
     }
   }
 `;
@@ -117,6 +117,14 @@ const guestListStyle = css`
   display: flex;
   justify-content: center;
   margin: 50px 0;
+`;
+
+const attendingStyle = css`
+  width: 250px;
+  padding: 0 10px;
+  position: relative;
+  /* display: flex;
+  justify-content: center; */
 `;
 
 const inputFieldStyle = css`
@@ -321,7 +329,9 @@ export default function GuestList() {
                         data-test-id="guest"
                       >
                         <td>
-                          Attending
+                          <div css={attendingStyle}>
+                            {item.attending ? 'Attending' : 'Not attending'}
+                          </div>
                           <input
                             type="checkbox"
                             aria-label="Guest Attending"
